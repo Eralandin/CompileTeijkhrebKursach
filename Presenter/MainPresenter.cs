@@ -15,8 +15,8 @@ namespace CompileTeijkhrebKursach.Presenter
         private readonly IMain _view;
         private string editingFileName = "";
         private bool isSaved = true;
-        private Operation lastUserEdit;
         private Stack<Operation> undoList;
+        private Operation lastUserOperation;
 
         public MainPresenter(IMain view)
         {
@@ -33,8 +33,11 @@ namespace CompileTeijkhrebKursach.Presenter
         }
         public void Repeat(object sender, EventArgs e)
         {
-            Operation repeatable = lastUserEdit;
-            _view.RepeatToView(repeatable);
+            if (lastUserOperation != null && !lastUserOperation.isCut && !lastUserOperation.isDelete)
+            {
+                undoList.Push(lastUserOperation);
+                _view.RepeatToView(lastUserOperation);
+            }
         }
         public void CreateFile(object sender, string fileName)
         {
@@ -109,19 +112,22 @@ namespace CompileTeijkhrebKursach.Presenter
         }
         public void Undo(object sender, EventArgs e)
         {
+            isSaved = false;
             if (undoList.Count > 0)
             {
-                _view.UndoToView(undoList.Pop());
+                Operation lastOp = undoList.Pop();
+                if (lastOp == lastUserOperation)
+                {
+                    lastUserOperation = null;
+                }
+                _view.UndoToView(lastOp);
             }
         }
-        public void AddUndo(object sender, Operation undoText)
+        public void AddUndo(object sender, Operation operation)
         {
             isSaved = false;
-            undoList.Push(undoText);
-            if ((sender as MainForm).UpperRichTextBox.Focused)
-            {
-                lastUserEdit = undoText;
-            }
+            undoList.Push(operation);
+            lastUserOperation = operation;
         }
     }
 }

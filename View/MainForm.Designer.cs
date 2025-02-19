@@ -159,6 +159,7 @@
             отменитьToolStripMenuItem.Name = "отменитьToolStripMenuItem";
             отменитьToolStripMenuItem.Size = new Size(202, 28);
             отменитьToolStripMenuItem.Text = "Отменить";
+            отменитьToolStripMenuItem.Click += LeftButton_Click;
             // 
             // повторитьToolStripMenuItem
             // 
@@ -167,6 +168,7 @@
             повторитьToolStripMenuItem.Name = "повторитьToolStripMenuItem";
             повторитьToolStripMenuItem.Size = new Size(202, 28);
             повторитьToolStripMenuItem.Text = "Повторить";
+            повторитьToolStripMenuItem.Click += RightButton_Click;
             // 
             // вырезатьToolStripMenuItem
             // 
@@ -175,6 +177,7 @@
             вырезатьToolStripMenuItem.Name = "вырезатьToolStripMenuItem";
             вырезатьToolStripMenuItem.Size = new Size(202, 28);
             вырезатьToolStripMenuItem.Text = "Вырезать";
+            вырезатьToolStripMenuItem.Click += CutButton_Click;
             // 
             // копироватьToolStripMenuItem
             // 
@@ -183,6 +186,7 @@
             копироватьToolStripMenuItem.Name = "копироватьToolStripMenuItem";
             копироватьToolStripMenuItem.Size = new Size(202, 28);
             копироватьToolStripMenuItem.Text = "Копировать";
+            копироватьToolStripMenuItem.Click += CopyButton_Click;
             // 
             // вставитьToolStripMenuItem
             // 
@@ -191,6 +195,7 @@
             вставитьToolStripMenuItem.Name = "вставитьToolStripMenuItem";
             вставитьToolStripMenuItem.Size = new Size(202, 28);
             вставитьToolStripMenuItem.Text = "Вставить";
+            вставитьToolStripMenuItem.Click += PasteButton_Click;
             // 
             // удалитьToolStripMenuItem
             // 
@@ -199,6 +204,7 @@
             удалитьToolStripMenuItem.Name = "удалитьToolStripMenuItem";
             удалитьToolStripMenuItem.Size = new Size(202, 28);
             удалитьToolStripMenuItem.Text = "Удалить";
+            удалитьToolStripMenuItem.Click += удалитьToolStripMenuItem_Click;
             // 
             // выделитьВсёToolStripMenuItem
             // 
@@ -207,6 +213,7 @@
             выделитьВсёToolStripMenuItem.Name = "выделитьВсёToolStripMenuItem";
             выделитьВсёToolStripMenuItem.Size = new Size(202, 28);
             выделитьВсёToolStripMenuItem.Text = "Выделить всё";
+            выделитьВсёToolStripMenuItem.Click += выделитьВсёToolStripMenuItem_Click;
             // 
             // текстToolStripMenuItem
             // 
@@ -486,7 +493,7 @@
             // DownRichTextBox
             // 
             DownRichTextBox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            DownRichTextBox.Font = new Font("Bahnschrift", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            DownRichTextBox.Font = new Font("Bahnschrift", 12F, FontStyle.Regular, GraphicsUnit.Point, 204);
             DownRichTextBox.Location = new Point(12, 179);
             DownRichTextBox.Name = "DownRichTextBox";
             DownRichTextBox.Size = new Size(772, 161);
@@ -496,13 +503,13 @@
             // UpperRichTextBox
             // 
             UpperRichTextBox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            UpperRichTextBox.Font = new Font("Bahnschrift", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            UpperRichTextBox.Font = new Font("Bahnschrift", 12F, FontStyle.Regular, GraphicsUnit.Point, 204);
             UpperRichTextBox.Location = new Point(12, 6);
             UpperRichTextBox.Name = "UpperRichTextBox";
             UpperRichTextBox.Size = new Size(772, 161);
             UpperRichTextBox.TabIndex = 0;
             UpperRichTextBox.Text = "";
-            UpperRichTextBox.KeyDown += UpperRichTextBox_KeyDown;
+            UpperRichTextBox.TextChanged += UpperRichTextBox_TextChanged;
             UpperRichTextBox.Leave += UpperRichTextBox_Leave;
             // 
             // MainForm
