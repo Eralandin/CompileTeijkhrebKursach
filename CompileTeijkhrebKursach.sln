@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34525.116
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompileTeijkhrebKursach", "CompileTeijkhrebKursach.csproj", "{DEB1D3DE-F738-4F58-9A5F-65B4E27BE4A1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DEB1D3DE-F738-4F58-9A5F-65B4E27BE4A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DEB1D3DE-F738-4F58-9A5F-65B4E27BE4A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DEB1D3DE-F738-4F58-9A5F-65B4E27BE4A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DEB1D3DE-F738-4F58-9A5F-65B4E27BE4A1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3A48BA85-7C4E-4937-A46A-748AB3B49E41}
+	EndGlobalSection
+EndGlobal
