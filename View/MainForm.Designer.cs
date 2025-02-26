@@ -52,13 +52,20 @@
             тестовыйПримерToolStripMenuItem = new ToolStripMenuItem();
             списокЛитературыToolStripMenuItem = new ToolStripMenuItem();
             исходныйКодПрограммыToolStripMenuItem = new ToolStripMenuItem();
+            размерШрифтаВОкнеВыводавводаToolStripMenuItem = new ToolStripMenuItem();
+            toolStripComboBox1 = new ToolStripComboBox();
             пускToolStripMenuItem = new ToolStripMenuItem();
             справкToolStripMenuItem = new ToolStripMenuItem();
             вызовСправкиToolStripMenuItem = new ToolStripMenuItem();
             оПрограммеToolStripMenuItem = new ToolStripMenuItem();
+            языкПрограммыToolStripMenuItem = new ToolStripMenuItem();
+            русскийToolStripMenuItem = new ToolStripMenuItem();
+            английскийToolStripMenuItem = new ToolStripMenuItem();
             BottomPanel = new Panel();
             NSTUlogo = new PictureBox();
             TopPanel = new Panel();
+            PagesCB = new ComboBox();
+            TabLabel = new Label();
             InfoButton = new Button();
             QuestionButton = new Button();
             StartEndButton = new Button();
@@ -71,8 +78,8 @@
             FolderButton = new Button();
             FileButton = new Button();
             MainPanel = new Panel();
-            DownRichTextBox = new RichTextBox();
             UpperRichTextBox = new RichTextBox();
+            DownRichTextBox = new RichTextBox();
             MainMenu.SuspendLayout();
             BottomPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)NSTUlogo).BeginInit();
@@ -83,8 +90,8 @@
             // MainMenu
             // 
             MainMenu.BackColor = Color.Firebrick;
-            MainMenu.Font = new Font("Bahnschrift", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 204);
-            MainMenu.Items.AddRange(new ToolStripItem[] { файоToolStripMenuItem, правкаToolStripMenuItem, текстToolStripMenuItem, пускToolStripMenuItem, справкToolStripMenuItem });
+            MainMenu.Font = new Font("Bahnschrift", 14.25F);
+            MainMenu.Items.AddRange(new ToolStripItem[] { файоToolStripMenuItem, правкаToolStripMenuItem, текстToolStripMenuItem, пускToolStripMenuItem, справкToolStripMenuItem, языкПрограммыToolStripMenuItem });
             MainMenu.Location = new Point(0, 0);
             MainMenu.Name = "MainMenu";
             MainMenu.Size = new Size(796, 31);
@@ -217,7 +224,7 @@
             // 
             // текстToolStripMenuItem
             // 
-            текстToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { постановкаЗадачиToolStripMenuItem, грамматикаToolStripMenuItem, классификацияГрамматикиToolStripMenuItem, методАнализаToolStripMenuItem, диагностикаИНейтрализацияОшибокToolStripMenuItem, тестовыйПримерToolStripMenuItem, списокЛитературыToolStripMenuItem, исходныйКодПрограммыToolStripMenuItem });
+            текстToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { постановкаЗадачиToolStripMenuItem, грамматикаToolStripMenuItem, классификацияГрамматикиToolStripMenuItem, методАнализаToolStripMenuItem, диагностикаИНейтрализацияОшибокToolStripMenuItem, тестовыйПримерToolStripMenuItem, списокЛитературыToolStripMenuItem, исходныйКодПрограммыToolStripMenuItem, размерШрифтаВОкнеВыводавводаToolStripMenuItem });
             текстToolStripMenuItem.ForeColor = SystemColors.ControlLightLight;
             текстToolStripMenuItem.Name = "текстToolStripMenuItem";
             текстToolStripMenuItem.Size = new Size(68, 27);
@@ -287,6 +294,26 @@
             исходныйКодПрограммыToolStripMenuItem.Size = new Size(421, 28);
             исходныйКодПрограммыToolStripMenuItem.Text = "Исходный код программы";
             // 
+            // размерШрифтаВОкнеВыводавводаToolStripMenuItem
+            // 
+            размерШрифтаВОкнеВыводавводаToolStripMenuItem.BackColor = Color.Firebrick;
+            размерШрифтаВОкнеВыводавводаToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { toolStripComboBox1 });
+            размерШрифтаВОкнеВыводавводаToolStripMenuItem.ForeColor = SystemColors.ControlLightLight;
+            размерШрифтаВОкнеВыводавводаToolStripMenuItem.Name = "размерШрифтаВОкнеВыводавводаToolStripMenuItem";
+            размерШрифтаВОкнеВыводавводаToolStripMenuItem.Size = new Size(421, 28);
+            размерШрифтаВОкнеВыводавводаToolStripMenuItem.Text = "Размер шрифта в окне вывода\\ввода";
+            // 
+            // toolStripComboBox1
+            // 
+            toolStripComboBox1.BackColor = Color.Firebrick;
+            toolStripComboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
+            toolStripComboBox1.Font = new Font("Bahnschrift", 15.75F);
+            toolStripComboBox1.ForeColor = SystemColors.ControlLightLight;
+            toolStripComboBox1.Items.AddRange(new object[] { "12", "14", "16", "18", "20" });
+            toolStripComboBox1.Name = "toolStripComboBox1";
+            toolStripComboBox1.Size = new Size(121, 33);
+            toolStripComboBox1.SelectedIndexChanged += toolStripComboBox1_TextUpdate;
+            // 
             // пускToolStripMenuItem
             // 
             пускToolStripMenuItem.ForeColor = SystemColors.ControlLightLight;
@@ -318,6 +345,32 @@
             оПрограммеToolStripMenuItem.Size = new Size(210, 28);
             оПрограммеToolStripMenuItem.Text = "О программе";
             // 
+            // языкПрограммыToolStripMenuItem
+            // 
+            языкПрограммыToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { русскийToolStripMenuItem, английскийToolStripMenuItem });
+            языкПрограммыToolStripMenuItem.ForeColor = SystemColors.ControlLightLight;
+            языкПрограммыToolStripMenuItem.Name = "языкПрограммыToolStripMenuItem";
+            языкПрограммыToolStripMenuItem.Size = new Size(167, 27);
+            языкПрограммыToolStripMenuItem.Text = "Язык программы";
+            // 
+            // русскийToolStripMenuItem
+            // 
+            русскийToolStripMenuItem.BackColor = Color.Firebrick;
+            русскийToolStripMenuItem.ForeColor = SystemColors.ControlLightLight;
+            русскийToolStripMenuItem.Name = "русскийToolStripMenuItem";
+            русскийToolStripMenuItem.Size = new Size(184, 28);
+            русскийToolStripMenuItem.Text = "Русский";
+            русскийToolStripMenuItem.Click += русскийToolStripMenuItem_Click;
+            // 
+            // английскийToolStripMenuItem
+            // 
+            английскийToolStripMenuItem.BackColor = Color.Firebrick;
+            английскийToolStripMenuItem.ForeColor = SystemColors.ControlLightLight;
+            английскийToolStripMenuItem.Name = "английскийToolStripMenuItem";
+            английскийToolStripMenuItem.Size = new Size(184, 28);
+            английскийToolStripMenuItem.Text = "Английский";
+            английскийToolStripMenuItem.Click += английскийToolStripMenuItem_Click;
+            // 
             // BottomPanel
             // 
             BottomPanel.BackColor = Color.ForestGreen;
@@ -341,6 +394,8 @@
             // TopPanel
             // 
             TopPanel.BackColor = SystemColors.ControlLightLight;
+            TopPanel.Controls.Add(PagesCB);
+            TopPanel.Controls.Add(TabLabel);
             TopPanel.Controls.Add(InfoButton);
             TopPanel.Controls.Add(QuestionButton);
             TopPanel.Controls.Add(StartEndButton);
@@ -358,8 +413,30 @@
             TopPanel.Size = new Size(796, 65);
             TopPanel.TabIndex = 2;
             // 
+            // PagesCB
+            // 
+            PagesCB.DropDownStyle = ComboBoxStyle.DropDownList;
+            PagesCB.Font = new Font("Bahnschrift", 12F);
+            PagesCB.FormattingEnabled = true;
+            PagesCB.Location = new Point(475, 29);
+            PagesCB.Name = "PagesCB";
+            PagesCB.Size = new Size(141, 27);
+            PagesCB.TabIndex = 11;
+            PagesCB.SelectedIndexChanged += PagesCB_SelectedIndexChanged;
+            // 
+            // TabLabel
+            // 
+            TabLabel.AutoSize = true;
+            TabLabel.Font = new Font("Bahnschrift", 12F);
+            TabLabel.Location = new Point(475, 7);
+            TabLabel.Name = "TabLabel";
+            TabLabel.Size = new Size(142, 19);
+            TabLabel.TabIndex = 4;
+            TabLabel.Text = "Текущая вкладка:";
+            // 
             // InfoButton
             // 
+            InfoButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             InfoButton.BackgroundImage = Resources.icons8_information_64;
             InfoButton.BackgroundImageLayout = ImageLayout.Zoom;
             InfoButton.Location = new Point(734, 7);
@@ -371,6 +448,7 @@
             // 
             // QuestionButton
             // 
+            QuestionButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             QuestionButton.BackgroundImage = Resources.Icon_round_Question_mark_svg;
             QuestionButton.BackgroundImageLayout = ImageLayout.Zoom;
             QuestionButton.Location = new Point(678, 7);
@@ -382,6 +460,7 @@
             // 
             // StartEndButton
             // 
+            StartEndButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             StartEndButton.BackgroundImage = Resources.icons8_end_50;
             StartEndButton.BackgroundImageLayout = ImageLayout.Zoom;
             StartEndButton.Location = new Point(622, 7);
@@ -395,7 +474,7 @@
             // 
             PasteButton.BackgroundImage = Resources.icons8_paste_50;
             PasteButton.BackgroundImageLayout = ImageLayout.Zoom;
-            PasteButton.Location = new Point(443, 7);
+            PasteButton.Location = new Point(419, 7);
             PasteButton.Name = "PasteButton";
             PasteButton.Size = new Size(50, 50);
             PasteButton.TabIndex = 7;
@@ -406,7 +485,7 @@
             // 
             CutButton.BackgroundImage = Resources.icons8_cut_paper_50;
             CutButton.BackgroundImageLayout = ImageLayout.Zoom;
-            CutButton.Location = new Point(387, 7);
+            CutButton.Location = new Point(363, 7);
             CutButton.Name = "CutButton";
             CutButton.Size = new Size(50, 50);
             CutButton.TabIndex = 6;
@@ -417,7 +496,7 @@
             // 
             CopyButton.BackgroundImage = Resources.icons8_copy_50;
             CopyButton.BackgroundImageLayout = ImageLayout.Zoom;
-            CopyButton.Location = new Point(331, 7);
+            CopyButton.Location = new Point(307, 7);
             CopyButton.Name = "CopyButton";
             CopyButton.Size = new Size(50, 50);
             CopyButton.TabIndex = 5;
@@ -428,7 +507,7 @@
             // 
             RightButton.BackgroundImage = Resources.icons8_move_right_32;
             RightButton.BackgroundImageLayout = ImageLayout.Zoom;
-            RightButton.Location = new Point(275, 7);
+            RightButton.Location = new Point(251, 7);
             RightButton.Name = "RightButton";
             RightButton.Size = new Size(50, 50);
             RightButton.TabIndex = 4;
@@ -439,7 +518,7 @@
             // 
             LeftButton.BackgroundImage = Resources.icons8_move_left_32;
             LeftButton.BackgroundImageLayout = ImageLayout.Zoom;
-            LeftButton.Location = new Point(219, 7);
+            LeftButton.Location = new Point(195, 7);
             LeftButton.Name = "LeftButton";
             LeftButton.Size = new Size(50, 50);
             LeftButton.TabIndex = 3;
@@ -482,35 +561,35 @@
             // MainPanel
             // 
             MainPanel.BackColor = SystemColors.ControlLightLight;
-            MainPanel.Controls.Add(DownRichTextBox);
             MainPanel.Controls.Add(UpperRichTextBox);
+            MainPanel.Controls.Add(DownRichTextBox);
             MainPanel.Dock = DockStyle.Fill;
             MainPanel.Location = new Point(0, 96);
             MainPanel.Name = "MainPanel";
             MainPanel.Size = new Size(796, 364);
             MainPanel.TabIndex = 3;
             // 
-            // DownRichTextBox
-            // 
-            DownRichTextBox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            DownRichTextBox.Font = new Font("Bahnschrift", 12F, FontStyle.Regular, GraphicsUnit.Point, 204);
-            DownRichTextBox.Location = new Point(12, 179);
-            DownRichTextBox.Name = "DownRichTextBox";
-            DownRichTextBox.Size = new Size(772, 161);
-            DownRichTextBox.TabIndex = 1;
-            DownRichTextBox.Text = "";
-            // 
             // UpperRichTextBox
             // 
             UpperRichTextBox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            UpperRichTextBox.Font = new Font("Bahnschrift", 12F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            UpperRichTextBox.Font = new Font("Bahnschrift", 12F);
             UpperRichTextBox.Location = new Point(12, 6);
             UpperRichTextBox.Name = "UpperRichTextBox";
+            UpperRichTextBox.ShortcutsEnabled = false;
             UpperRichTextBox.Size = new Size(772, 161);
             UpperRichTextBox.TabIndex = 0;
             UpperRichTextBox.Text = "";
             UpperRichTextBox.TextChanged += UpperRichTextBox_TextChanged;
-            UpperRichTextBox.Leave += UpperRichTextBox_Leave;
+            // 
+            // DownRichTextBox
+            // 
+            DownRichTextBox.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            DownRichTextBox.Font = new Font("Bahnschrift", 12F);
+            DownRichTextBox.Location = new Point(12, 173);
+            DownRichTextBox.Name = "DownRichTextBox";
+            DownRichTextBox.Size = new Size(772, 161);
+            DownRichTextBox.TabIndex = 1;
+            DownRichTextBox.Text = "";
             // 
             // MainForm
             // 
@@ -531,6 +610,7 @@
             BottomPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)NSTUlogo).EndInit();
             TopPanel.ResumeLayout(false);
+            TopPanel.PerformLayout();
             MainPanel.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
@@ -582,6 +662,13 @@
         private Button InfoButton;
         private Button QuestionButton;
         private Button StartEndButton;
+        private ToolStripMenuItem размерШрифтаВОкнеВыводавводаToolStripMenuItem;
+        private ToolStripComboBox toolStripComboBox1;
         public RichTextBox UpperRichTextBox;
+        private Label TabLabel;
+        private ComboBox PagesCB;
+        private ToolStripMenuItem языкПрограммыToolStripMenuItem;
+        private ToolStripMenuItem русскийToolStripMenuItem;
+        private ToolStripMenuItem английскийToolStripMenuItem;
     }
 }

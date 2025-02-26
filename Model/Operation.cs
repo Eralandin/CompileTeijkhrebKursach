@@ -9,15 +9,15 @@ namespace CompileTeijkhrebKursach.Model
     public class Operation
     {
         public string containtment;
-        public int position;
         public bool isCut;
         public bool isDelete;
-        public Operation(string containts, int pos, bool isCut, bool isDelete)
+        public bool isPaste;
+        public Operation(string containts, bool isCut, bool isDelete, bool isPaste)
         {
             containtment = containts;
-            position = pos;
             this.isCut = isCut;
             this.isDelete = isDelete;
+            this.isPaste = isPaste;
         }
     }
 }

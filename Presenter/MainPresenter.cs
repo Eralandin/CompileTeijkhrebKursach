@@ -4,6 +4,7 @@ using CompileTeijkhrebKursach.View.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -15,8 +16,13 @@ namespace CompileTeijkhrebKursach.Presenter
         private readonly IMain _view;
         private string editingFileName = "";
         private bool isSaved = true;
-        private Stack<Operation> undoList;
         private Operation lastUserOperation;
+        private List<TextModel> textModels = new List<TextModel>();
+        private int currentPageId;
+        private string SaveFileStr1 = "Сохранить файл";
+        private string SaveFileStr2 = "Сохранить файл";
+        private string FileSaved = "Файл успешно сохранён";
+        private string FileOpened = "Файл успешно открыт";
 
         public MainPresenter(IMain view)
         {
@@ -24,18 +30,46 @@ namespace CompileTeijkhrebKursach.Presenter
             _view.CreateFile += CreateFile;
             _view.OpenFile += OpenFile;
             _view.SaveFile += SaveFile;
-            _view.AddUndo += AddUndo;
-            _view.Undo += Undo;
             _view.SaveAsFile += SaveAsFile;
             _view.CloseProgram += CloseProgram;
             _view.Repeat += Repeat;
-            undoList = new Stack<Operation>();
+            _view.SelectPage += SelectPage;
+            _view.ChangeLastUserOperation += ChangeLastUserOperation;
+            _view.NullLastUserOperation += NullLastUserOperation;
+        }
+        public void ChangeLastUserOperation(object sender, Operation lastUserOperation)
+        {
+            this.lastUserOperation = lastUserOperation ?? throw new ArgumentNullException( nameof(lastUserOperation));
+            isSaved = false;
+            _view.SetFlagToComboBoxItem(Path.GetFileName(editingFileName), isSaved);
+        }
+        public void NullLastUserOperation(object sender, EventArgs e)
+        {
+            this.lastUserOperation = null;
+            isSaved = false;
+            _view.SetFlagToComboBoxItem(Path.GetFileName(editingFileName), isSaved);
+        }
+        public void SelectPage(object sender, int index)
+        {
+            TextModel model = textModels.Find(x => x.id == index);
+            if (model != null)
+            {
+                textModels[currentPageId-1].text = _view.GetText();
+                textModels[currentPageId-1].isSaved = isSaved;
+                textModels[currentPageId-1].lastText = _view.GetText();
+                _view.SetLastText(model.lastText);
+                currentPageId = model.id;
+                editingFileName = model.editingFileName;
+                isSaved = model.isSaved;
+                lastUserOperation = null;
+                _view.InsertFileText(model.text);
+                _view.SetPage(Path.GetFileName(editingFileName));
+            }
         }
         public void Repeat(object sender, EventArgs e)
         {
-            if (lastUserOperation != null && !lastUserOperation.isCut && !lastUserOperation.isDelete)
+            if (lastUserOperation != null)
             {
-                undoList.Push(lastUserOperation);
                 _view.RepeatToView(lastUserOperation);
             }
         }
@@ -63,10 +97,24 @@ namespace CompileTeijkhrebKursach.Presenter
         }
         public void OpenFile(object sender, string fileDestination)
         {
+            foreach (var textModel in textModels)
+            {
+                if (textModel.editingFileName == fileDestination)
+                {
+                    SelectPage(this, textModels.Find(x => x.editingFileName == fileDestination).id);
+                    return;
+                }
+            }
             string fileText = File.ReadAllText(fileDestination);
-            undoList.Clear();
+            string fileName = Path.GetFileName(fileDestination);
+            TextModel newTextModel = new TextModel(fileDestination,textModels.Count + 1, fileText, lastUserOperation, isSaved, fileText);
+            textModels.Add(newTextModel);
+            _view.AddTab(fileName);
+            currentPageId = newTextModel.id;
+            lastUserOperation = null;
             editingFileName = fileDestination;
             _view.InsertFileText(fileText);
+            _view.SetLastText(fileText);
             isSaved = true;
             _view.Message("Файл успешно открыт!");
         }
@@ -75,6 +123,8 @@ namespace CompileTeijkhrebKursach.Presenter
             if (!string.IsNullOrEmpty(editingFileName))
             {
                 System.IO.File.WriteAllText(editingFileName,textToSave);
+                isSaved = true;
+                _view.SetFlagToComboBoxItem(Path.GetFileName(editingFileName), isSaved);
                 _view.Message("Файл успешно сохранён!");
             }
             else
@@ -89,6 +139,7 @@ namespace CompileTeijkhrebKursach.Presenter
 
                         System.IO.File.WriteAllText(editingFileName, textToSave);
                         isSaved = true;
+                        _view.SetFlagToComboBoxItem(Path.GetFileName(editingFileName), isSaved);
                         _view.Message("Файл успешно сохранён!");
                     }
                     else
@@ -109,25 +160,6 @@ namespace CompileTeijkhrebKursach.Presenter
                 isSaved = true;
                 _view.Message("Файл успешно сохранён!");
             }
-        }
-        public void Undo(object sender, EventArgs e)
-        {
-            isSaved = false;
-            if (undoList.Count > 0)
-            {
-                Operation lastOp = undoList.Pop();
-                if (lastOp == lastUserOperation)
-                {
-                    lastUserOperation = null;
-                }
-                _view.UndoToView(lastOp);
-            }
-        }
-        public void AddUndo(object sender, Operation operation)
-        {
-            isSaved = false;
-            undoList.Push(operation);
-            lastUserOperation = operation;
         }
     }
 }

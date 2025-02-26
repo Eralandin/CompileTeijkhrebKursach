@@ -6,12 +6,18 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
+using System.Reflection.Metadata;
+using System.Resources;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
+using System.Xml.Linq;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace CompileTeijkhrebKursach.View
 {
@@ -21,11 +27,15 @@ namespace CompileTeijkhrebKursach.View
         private int selectionIndex = 0;
         private bool isRightButtonClickOverridden = false;
         private string lastText = "";
+        private bool isCutEnabled = false;
         public MainForm()
         {
             InitializeComponent();
             _presenter = new MainPresenter(this);
             lastText = UpperRichTextBox.Text;
+            UpperRichTextBox.DragEnter += new DragEventHandler(MainForm_DragEnter);
+            UpperRichTextBox.DragDrop += new DragEventHandler(MainForm_DragDrop);
+            UpperRichTextBox.AllowDrop = true;
         }
         public event EventHandler<string> CreateFile;
         public event EventHandler<string> OpenFile;
@@ -33,39 +43,140 @@ namespace CompileTeijkhrebKursach.View
         public event EventHandler StartEnd;
         public event EventHandler OpenHelp;
         public event EventHandler About;
-        public event EventHandler<Operation> AddUndo;
-        public event EventHandler Undo;
         public event EventHandler Repeat;
         public event EventHandler<string> SaveAsFile;
         public event FormClosingEventHandler CloseProgram;
+        public event EventHandler<int> SelectPage;
+        public event EventHandler<Operation> ChangeLastUserOperation;
+        public event EventHandler NullLastUserOperation;
         public void Message(string message)
         {
             MessageBox.Show(message);
+        }
+        public string GetText()
+        {
+            return UpperRichTextBox.Text;
+        }
+        public void SetLastText(string text)
+        {
+            lastText = text;
         }
         public void InsertFileText(string text)
         {
             UpperRichTextBox.Text = text;
         }
-        public void UndoToView(Operation operation)
+        private void UpdateControlsText(Control control, ResourceManager res)
         {
-            if (operation.isDelete)
+            //SaveFileStr1 = res.GetString("SaveFileStr1");
+            //SaveFileStr2 = res.GetString("SaveFileStr2");
+            //FileSaved = res.GetString("FileSaved");
+            //FileOpened = res.GetString("FileOpened");
+
+            foreach (var item in this.MainMenuStrip.Items)
             {
-                UpperRichTextBox.Text = UpperRichTextBox.Text.Insert(operation.position, operation.containtment);
-                UpperRichTextBox.Focus();
-                UpperRichTextBox.SelectionStart = operation.position;
+                if (item is ToolStripMenuItem menuItem)
+                {
+                    UpdateMenuItems(menuItem, res);
+                }
+            }
+        }
+        private void UpdateMenuItems(ToolStripMenuItem menuItem, ResourceManager res)
+        {
+            if (!string.IsNullOrEmpty(menuItem.Name))
+            {
+                string newText = res.GetString(menuItem.Name);
+                if (!string.IsNullOrEmpty(newText))
+                    menuItem.Text = newText;
+            }
+
+
+            foreach (ToolStripItem subItem in menuItem.DropDownItems)
+            {
+                if (subItem is ToolStripMenuItem subMenuItem)
+                {
+                    UpdateMenuItems(subMenuItem, res);
+                }
+            }
+        }
+        public void SetFlagToComboBoxItem(string itemName, bool flag)
+        {
+            if (flag)
+            {
+                List<Tuple<string, int>> values = new List<Tuple<string, int>>();
+                foreach (var item in PagesCB.Items)
+                {
+                    if (item != null)
+                    {
+                        if (item.ToString().StartsWith("* "))
+                        {
+                            String altItem = new String(item.ToString());
+                            values.Add(new Tuple<string, int>(altItem.ToString().Remove(0, 2), PagesCB.Items.IndexOf(item)));
+                        }
+                        else
+                        {
+                            values.Add(new Tuple<string, int>(item.ToString(), PagesCB.Items.IndexOf(item)));
+                        }
+                    }
+                }
+                int neededIndex = values.Find(x => x.Item1 == itemName).Item2;
+                if (PagesCB.Items[neededIndex].ToString().StartsWith("* "))
+                {
+                    PagesCB.Items[neededIndex] = itemName;
+                }
             }
             else
             {
-                UpperRichTextBox.Text = UpperRichTextBox.Text.Remove(operation.position, operation.containtment.Length);
-                UpperRichTextBox.Focus();
-                UpperRichTextBox.SelectionStart = operation.position;
+                List<Tuple<string, int>> values = new List<Tuple<string, int>>();
+                foreach (var item in PagesCB.Items)
+                {
+                    if (item != null)
+                    {
+                        if (item.ToString().StartsWith("* "))
+                        {
+                            String altItem = new String(item.ToString());
+                            values.Add(new Tuple<string, int>(altItem.ToString().Remove(0, 2), PagesCB.Items.IndexOf(item)));
+                        }
+                        else
+                        {
+                            values.Add(new Tuple<string, int>(item.ToString(), PagesCB.Items.IndexOf(item)));
+                        }
+                    }
+                }
+                int neededIndex = values.Find(x => x.Item1 == itemName).Item2;
+                PagesCB.Items[neededIndex] = "* " + itemName;
             }
+        }
+        public void SetPage(string pageName)
+        {
+            PagesCB.SelectedItem = pageName;
         }
         public void RepeatToView(Operation operation)
         {
-            UpperRichTextBox.Text = UpperRichTextBox.Text.Insert(operation.position, operation.containtment);
+            if (operation.isDelete == false)
+            {
+                int position = UpperRichTextBox.SelectionStart;
+                UpperRichTextBox.Text = UpperRichTextBox.Text.Insert(UpperRichTextBox.SelectionStart, operation.containtment);
+                lastText = UpperRichTextBox.Text;
+                UpperRichTextBox.Focus();
+                UpperRichTextBox.SelectionStart = position + operation.containtment.Length;
+            }
+            else
+            {
+                if (UpperRichTextBox.SelectionStart > 0)
+                {
+                    int position = UpperRichTextBox.SelectionStart;
+                    UpperRichTextBox.Text = UpperRichTextBox.Text.Remove(position - 1, 1);
+                    lastText = UpperRichTextBox.Text;
+                    UpperRichTextBox.Focus();
+                    UpperRichTextBox.SelectionStart = position - operation.containtment.Length;
+                }
+            }
         }
-
+        public void AddTab(string fileName)
+        {
+            PagesCB.Items.Add(fileName);
+            PagesCB.SelectedItem = fileName;
+        }
         //Создание файла
         private void FileButton_Click(object sender, EventArgs e)
         {
@@ -91,73 +202,34 @@ namespace CompileTeijkhrebKursach.View
         {
             SaveFile?.Invoke(this, UpperRichTextBox.Text);
         }
-        //Смещение влево
+        //Отмена
         private void LeftButton_Click(object sender, EventArgs e)
         {
-            selectionIndex = UpperRichTextBox.SelectionStart;
-            Undo?.Invoke(this, EventArgs.Empty);
-            UpperRichTextBox.Focus();
-            UpperRichTextBox.SelectionStart = selectionIndex;
+            if (UpperRichTextBox.CanUndo)
+            {
+                UpperRichTextBox.Undo();
+            }
         }
-        //Смещение вправо
+        //Повтор
         private void RightButton_Click(object sender, EventArgs e)
         {
-            selectionIndex = UpperRichTextBox.SelectionStart;
             Repeat?.Invoke(this, EventArgs.Empty);
-            UpperRichTextBox.Focus();
-            UpperRichTextBox.SelectionStart = selectionIndex;
         }
         //Копирование
         private void CopyButton_Click(object sender, EventArgs e)
         {
-            if (UpperRichTextBox.SelectedText.Length > 0)
-            {
-                selectionIndex = UpperRichTextBox.SelectionStart;
-                Clipboard.SetText(UpperRichTextBox.SelectedText);
-                UpperRichTextBox.Focus();
-                UpperRichTextBox.SelectionStart = selectionIndex;
-            }
+            UpperRichTextBox.Copy();
         }
         //Вырезать
         private void CutButton_Click(object sender, EventArgs e)
         {
-            if (UpperRichTextBox.SelectedText.Length > 0)
-            {
-                Clipboard.SetText(UpperRichTextBox.SelectedText);
-                int startPos = UpperRichTextBox.SelectionStart;
-                string removedText = UpperRichTextBox.SelectedText;
-
-                _presenter.AddUndo(this, new Operation(removedText, startPos, isCut: true, isDelete: true));
-                UpperRichTextBox.Text = UpperRichTextBox.Text.Remove(startPos, removedText.Length);
-                UpperRichTextBox.Focus();
-                UpperRichTextBox.SelectionStart = startPos;
-            }
+            isCutEnabled = true;
+            UpperRichTextBox.Cut();
         }
         //Вставить
         private void PasteButton_Click(object sender, EventArgs e)
         {
-            if (Clipboard.ContainsText())
-            {
-                if (UpperRichTextBox.SelectedText.Length > 0)
-                {
-                    string textToInsert = Clipboard.GetText();
-                    int startPos = UpperRichTextBox.SelectionStart;
-
-                    //СДЕЛАТЬ ОПЕРАЦИИ удаления\добавления
-                    UpperRichTextBox.SelectedText = null;
-                    UpperRichTextBox.Text = UpperRichTextBox.Text.Insert(startPos, textToInsert);
-                }
-                else
-                {
-                    string textToInsert = Clipboard.GetText();
-                    int startPos = UpperRichTextBox.SelectionStart;
-
-                    _presenter.AddUndo(this, new Operation(textToInsert, startPos, false, false));
-                    UpperRichTextBox.Text = UpperRichTextBox.Text.Insert(startPos, textToInsert);
-                    UpperRichTextBox.Focus();
-                    UpperRichTextBox.SelectionStart = startPos + textToInsert.Length;
-                }
-            }
+            UpperRichTextBox.Paste();
         }
         //Пуск
         private void StartEndButton_Click(object sender, EventArgs e)
@@ -188,45 +260,6 @@ namespace CompileTeijkhrebKursach.View
         {
             this.Close();
         }
-
-        //private void UpperRichTextBox_KeyDown(object sender, KeyEventArgs e)
-        //{
-        //    if (e.KeyCode == Keys.Back && UpperRichTextBox.SelectedText.Length == 0)
-        //    {
-        //        if (!isRightButtonClickOverridden)
-        //        {
-        //            RightButton.Click -= RightButton_Click;
-        //            RightButton.Click += DeleteRepeat;
-        //            isRightButtonClickOverridden = true;
-        //        }
-        //        AddUndo?.Invoke(this, new Operation("", UpperRichTextBox.SelectionStart, false, true));
-        //    }
-        //    else if (e.KeyCode == Keys.Back)
-        //    {
-        //        RightButton.Enabled = false;
-        //    }
-        //    else
-        //    {
-        //        RightButton.Enabled = true;
-
-        //        if (isRightButtonClickOverridden)
-        //        {
-        //            RightButton.Click -= DeleteRepeat;
-        //            RightButton.Click += RightButton_Click;
-        //            isRightButtonClickOverridden = false;
-        //        }
-        //    }
-        //}
-        public void DeleteRepeat(object sender, EventArgs e)
-        {
-            UpperRichTextBox.Focus();
-            UpperRichTextBox.SelectionStart = selectionIndex;
-            if (UpperRichTextBox.Text.Length > 0 && UpperRichTextBox.SelectionStart != 0)
-            {
-                UpperRichTextBox.Text = UpperRichTextBox.Text.Remove(UpperRichTextBox.SelectionStart - 1, 1);
-                UpperRichTextBox.SelectionStart = selectionIndex - 1;
-            }
-        }
         private void UpperRichTextBox_Leave(object sender, EventArgs e)
         {
             selectionIndex = UpperRichTextBox.SelectionStart;
@@ -241,16 +274,31 @@ namespace CompileTeijkhrebKursach.View
 
             if (newText.Length > lastText.Length) // Ввод символа
             {
+                int diff = newText.Length - lastText.Length;
                 string insertedText = newText.Substring(cursorPos - (newText.Length - lastText.Length), newText.Length - lastText.Length);
-                _presenter.AddUndo(this, new Operation(insertedText, cursorPos - insertedText.Length, false, false));
+                if (diff == 1)
+                {
+                    ChangeLastUserOperation?.Invoke(this, new Operation(insertedText, false, false, false));
+                }
+                else
+                {
+                    ChangeLastUserOperation?.Invoke(this, new Operation(insertedText, false, false, true));
+                }
             }
             else if (newText.Length < lastText.Length) // Удаление символа
             {
                 int diff = lastText.Length - newText.Length;
                 string deletedText = lastText.Substring(cursorPos, diff);
-                _presenter.AddUndo(this, new Operation(deletedText, cursorPos, false, true));
+                if (diff == 1 && isCutEnabled == false)
+                {
+                    ChangeLastUserOperation?.Invoke(this, new Operation(deletedText, false, true, false));
+                }
+                else
+                {
+                    NullLastUserOperation?.Invoke(this, EventArgs.Empty);
+                    isCutEnabled = false;
+                }
             }
-
             lastText = newText;
         }
 
@@ -258,13 +306,110 @@ namespace CompileTeijkhrebKursach.View
         {
             if (UpperRichTextBox.SelectedText.Length > 0)
             {
-                UpperRichTextBox.SelectedText = null;
+                UpperRichTextBox.SelectedText = "";
             }
         }
-
         private void выделитьВсёToolStripMenuItem_Click(object sender, EventArgs e)
         {
             UpperRichTextBox.SelectAll();
+        }
+        private void toolStripComboBox1_TextUpdate(object sender, EventArgs e)
+        {
+            UpperRichTextBox.Font = new Font("Bahnschrift", float.Parse(toolStripComboBox1.Text));
+            DownRichTextBox.Font = new Font("Bahnschrift", float.Parse(toolStripComboBox1.Text));
+            UpperRichTextBox.Update();
+            DownRichTextBox.Update();
+        }
+        private void AddPage_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Упс!");
+        }
+        private void PagesCB_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (PagesCB.Focused)
+            {
+                SelectPage?.Invoke(this, PagesCB.SelectedIndex + 1);
+            }
+        }
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == (Keys.Control | Keys.S))
+            {
+                SaveButton_Click(this, EventArgs.Empty);
+                return true;
+            }
+            else if (keyData == (Keys.Control | Keys.X))
+            {
+                CutButton_Click(this, EventArgs.Empty);
+            }
+            else if (keyData == (Keys.Control | Keys.C))
+            {
+                CopyButton_Click(this, EventArgs.Empty);
+            }
+            else if (keyData == (Keys.Control | Keys.V))
+            {
+                PasteButton_Click(this, EventArgs.Empty);
+            }
+            else if (keyData == (Keys.Control | Keys.O))
+            {
+                FolderButton_Click(this, EventArgs.Empty);
+                return true;
+            }
+            else if (keyData == (Keys.Control | Keys.A))
+            {
+                UpperRichTextBox.SelectAll();
+            }
+            else if (keyData == (Keys.Control | Keys.N))
+            {
+                FileButton_Click(this, EventArgs.Empty);
+            }
+            else if (keyData == (Keys.Control | Keys.W))
+            {
+                //ЗАКРЫТИЕ ВКЛАДКИ
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        private void MainForm_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                e.Effect = DragDropEffects.Copy;
+            }
+            else
+            {
+                e.Effect = DragDropEffects.None;
+            }
+        }
+
+        private void MainForm_DragDrop(object sender, DragEventArgs e)
+        {
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+            foreach (string filePath in files)
+            {
+                if (File.Exists(filePath))
+                {
+                    OpenFile?.Invoke(this, filePath);
+                }
+                else
+                {
+                    MessageBox.Show("Невозможно открыть файл.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void русскийToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo("ru");
+            ResourceManager res = new ResourceManager("CompileTeijkhrebKursach.Resources.Resource_ru", typeof(MainForm).Assembly);
+            UpdateControlsText(this,res);
+        }
+
+        private void английскийToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo("en");
+            ResourceManager res = new ResourceManager("CompileTeijkhrebKursach.Resources.Resource_en", typeof(MainForm).Assembly);
+            UpdateControlsText(this, res);
         }
     }
 }

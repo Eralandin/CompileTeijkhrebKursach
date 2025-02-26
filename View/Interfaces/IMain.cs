@@ -15,14 +15,19 @@ namespace CompileTeijkhrebKursach.View.Interfaces
         event EventHandler StartEnd;
         event EventHandler OpenHelp;
         event EventHandler About;
-        event EventHandler<Operation> AddUndo;
-        event EventHandler Undo;
         event EventHandler Repeat;
         event EventHandler<string> SaveAsFile;
         event FormClosingEventHandler CloseProgram;
+        event EventHandler<int> SelectPage;
+        event EventHandler<Operation> ChangeLastUserOperation;
+        event EventHandler NullLastUserOperation;
         void Message(string message);
         void InsertFileText(string text);
-        void UndoToView(Operation operation);
         void RepeatToView(Operation operate);
+        void AddTab (string fileName);
+        string GetText();
+        void SetLastText(string text);
+        void SetPage(string pageName);
+        void SetFlagToComboBoxItem(string itemName, bool flag);
     }
 }
