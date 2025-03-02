@@ -43,6 +43,7 @@
             вставитьToolStripMenuItem = new ToolStripMenuItem();
             удалитьToolStripMenuItem = new ToolStripMenuItem();
             выделитьВсёToolStripMenuItem = new ToolStripMenuItem();
+            закрытьВкладкуToolStripMenuItem = new ToolStripMenuItem();
             текстToolStripMenuItem = new ToolStripMenuItem();
             постановкаЗадачиToolStripMenuItem = new ToolStripMenuItem();
             грамматикаToolStripMenuItem = new ToolStripMenuItem();
@@ -78,13 +79,24 @@
             FolderButton = new Button();
             FileButton = new Button();
             MainPanel = new Panel();
+            splitContainer1 = new SplitContainer();
+            NumericLB = new ListBox();
             UpperRichTextBox = new RichTextBox();
-            DownRichTextBox = new RichTextBox();
+            LowerDataGridView = new DataGridView();
+            FileNameColumn = new DataGridViewTextBoxColumn();
+            LineColumn = new DataGridViewTextBoxColumn();
+            ColumnColumn = new DataGridViewTextBoxColumn();
+            MessageColumn = new DataGridViewTextBoxColumn();
             MainMenu.SuspendLayout();
             BottomPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)NSTUlogo).BeginInit();
             TopPanel.SuspendLayout();
             MainPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
+            splitContainer1.Panel1.SuspendLayout();
+            splitContainer1.Panel2.SuspendLayout();
+            splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)LowerDataGridView).BeginInit();
             SuspendLayout();
             // 
             // MainMenu
@@ -153,7 +165,7 @@
             // 
             // правкаToolStripMenuItem
             // 
-            правкаToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { отменитьToolStripMenuItem, повторитьToolStripMenuItem, вырезатьToolStripMenuItem, копироватьToolStripMenuItem, вставитьToolStripMenuItem, удалитьToolStripMenuItem, выделитьВсёToolStripMenuItem });
+            правкаToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { отменитьToolStripMenuItem, повторитьToolStripMenuItem, вырезатьToolStripMenuItem, копироватьToolStripMenuItem, вставитьToolStripMenuItem, удалитьToolStripMenuItem, выделитьВсёToolStripMenuItem, закрытьВкладкуToolStripMenuItem });
             правкаToolStripMenuItem.ForeColor = SystemColors.ControlLightLight;
             правкаToolStripMenuItem.Name = "правкаToolStripMenuItem";
             правкаToolStripMenuItem.Size = new Size(85, 27);
@@ -164,7 +176,7 @@
             отменитьToolStripMenuItem.BackColor = Color.Firebrick;
             отменитьToolStripMenuItem.ForeColor = SystemColors.ControlLightLight;
             отменитьToolStripMenuItem.Name = "отменитьToolStripMenuItem";
-            отменитьToolStripMenuItem.Size = new Size(202, 28);
+            отменитьToolStripMenuItem.Size = new Size(230, 28);
             отменитьToolStripMenuItem.Text = "Отменить";
             отменитьToolStripMenuItem.Click += LeftButton_Click;
             // 
@@ -173,7 +185,7 @@
             повторитьToolStripMenuItem.BackColor = Color.Firebrick;
             повторитьToolStripMenuItem.ForeColor = SystemColors.ControlLightLight;
             повторитьToolStripMenuItem.Name = "повторитьToolStripMenuItem";
-            повторитьToolStripMenuItem.Size = new Size(202, 28);
+            повторитьToolStripMenuItem.Size = new Size(230, 28);
             повторитьToolStripMenuItem.Text = "Повторить";
             повторитьToolStripMenuItem.Click += RightButton_Click;
             // 
@@ -182,7 +194,7 @@
             вырезатьToolStripMenuItem.BackColor = Color.Firebrick;
             вырезатьToolStripMenuItem.ForeColor = SystemColors.ControlLightLight;
             вырезатьToolStripMenuItem.Name = "вырезатьToolStripMenuItem";
-            вырезатьToolStripMenuItem.Size = new Size(202, 28);
+            вырезатьToolStripMenuItem.Size = new Size(230, 28);
             вырезатьToolStripMenuItem.Text = "Вырезать";
             вырезатьToolStripMenuItem.Click += CutButton_Click;
             // 
@@ -191,7 +203,7 @@
             копироватьToolStripMenuItem.BackColor = Color.Firebrick;
             копироватьToolStripMenuItem.ForeColor = SystemColors.ControlLightLight;
             копироватьToolStripMenuItem.Name = "копироватьToolStripMenuItem";
-            копироватьToolStripMenuItem.Size = new Size(202, 28);
+            копироватьToolStripMenuItem.Size = new Size(230, 28);
             копироватьToolStripMenuItem.Text = "Копировать";
             копироватьToolStripMenuItem.Click += CopyButton_Click;
             // 
@@ -200,7 +212,7 @@
             вставитьToolStripMenuItem.BackColor = Color.Firebrick;
             вставитьToolStripMenuItem.ForeColor = SystemColors.ControlLightLight;
             вставитьToolStripMenuItem.Name = "вставитьToolStripMenuItem";
-            вставитьToolStripMenuItem.Size = new Size(202, 28);
+            вставитьToolStripMenuItem.Size = new Size(230, 28);
             вставитьToolStripMenuItem.Text = "Вставить";
             вставитьToolStripMenuItem.Click += PasteButton_Click;
             // 
@@ -209,7 +221,7 @@
             удалитьToolStripMenuItem.BackColor = Color.Firebrick;
             удалитьToolStripMenuItem.ForeColor = SystemColors.ControlLightLight;
             удалитьToolStripMenuItem.Name = "удалитьToolStripMenuItem";
-            удалитьToolStripMenuItem.Size = new Size(202, 28);
+            удалитьToolStripMenuItem.Size = new Size(230, 28);
             удалитьToolStripMenuItem.Text = "Удалить";
             удалитьToolStripMenuItem.Click += удалитьToolStripMenuItem_Click;
             // 
@@ -218,9 +230,18 @@
             выделитьВсёToolStripMenuItem.BackColor = Color.Firebrick;
             выделитьВсёToolStripMenuItem.ForeColor = SystemColors.ControlLightLight;
             выделитьВсёToolStripMenuItem.Name = "выделитьВсёToolStripMenuItem";
-            выделитьВсёToolStripMenuItem.Size = new Size(202, 28);
+            выделитьВсёToolStripMenuItem.Size = new Size(230, 28);
             выделитьВсёToolStripMenuItem.Text = "Выделить всё";
             выделитьВсёToolStripMenuItem.Click += выделитьВсёToolStripMenuItem_Click;
+            // 
+            // закрытьВкладкуToolStripMenuItem
+            // 
+            закрытьВкладкуToolStripMenuItem.BackColor = Color.Firebrick;
+            закрытьВкладкуToolStripMenuItem.ForeColor = SystemColors.ControlLightLight;
+            закрытьВкладкуToolStripMenuItem.Name = "закрытьВкладкуToolStripMenuItem";
+            закрытьВкладкуToolStripMenuItem.Size = new Size(230, 28);
+            закрытьВкладкуToolStripMenuItem.Text = "Закрыть вкладку";
+            закрытьВкладкуToolStripMenuItem.Click += закрытьВкладкуToolStripMenuItem_Click;
             // 
             // текстToolStripMenuItem
             // 
@@ -336,6 +357,7 @@
             вызовСправкиToolStripMenuItem.Name = "вызовСправкиToolStripMenuItem";
             вызовСправкиToolStripMenuItem.Size = new Size(210, 28);
             вызовСправкиToolStripMenuItem.Text = "Вызов справки";
+            вызовСправкиToolStripMenuItem.Click += вызовСправкиToolStripMenuItem_Click;
             // 
             // оПрограммеToolStripMenuItem
             // 
@@ -344,6 +366,7 @@
             оПрограммеToolStripMenuItem.Name = "оПрограммеToolStripMenuItem";
             оПрограммеToolStripMenuItem.Size = new Size(210, 28);
             оПрограммеToolStripMenuItem.Text = "О программе";
+            оПрограммеToolStripMenuItem.Click += оПрограммеToolStripMenuItem_Click;
             // 
             // языкПрограммыToolStripMenuItem
             // 
@@ -415,10 +438,12 @@
             // 
             // PagesCB
             // 
+            PagesCB.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             PagesCB.DropDownStyle = ComboBoxStyle.DropDownList;
             PagesCB.Font = new Font("Bahnschrift", 12F);
             PagesCB.FormattingEnabled = true;
             PagesCB.Location = new Point(475, 29);
+            PagesCB.MaximumSize = new Size(500, 0);
             PagesCB.Name = "PagesCB";
             PagesCB.Size = new Size(141, 27);
             PagesCB.TabIndex = 11;
@@ -444,7 +469,7 @@
             InfoButton.Size = new Size(50, 50);
             InfoButton.TabIndex = 10;
             InfoButton.UseVisualStyleBackColor = true;
-            InfoButton.Click += InfoButton_Click;
+            InfoButton.Click += оПрограммеToolStripMenuItem_Click;
             // 
             // QuestionButton
             // 
@@ -456,7 +481,7 @@
             QuestionButton.Size = new Size(50, 50);
             QuestionButton.TabIndex = 9;
             QuestionButton.UseVisualStyleBackColor = true;
-            QuestionButton.Click += QuestionButton_Click;
+            QuestionButton.Click += вызовСправкиToolStripMenuItem_Click;
             // 
             // StartEndButton
             // 
@@ -561,35 +586,101 @@
             // MainPanel
             // 
             MainPanel.BackColor = SystemColors.ControlLightLight;
-            MainPanel.Controls.Add(UpperRichTextBox);
-            MainPanel.Controls.Add(DownRichTextBox);
+            MainPanel.Controls.Add(splitContainer1);
             MainPanel.Dock = DockStyle.Fill;
             MainPanel.Location = new Point(0, 96);
             MainPanel.Name = "MainPanel";
             MainPanel.Size = new Size(796, 364);
             MainPanel.TabIndex = 3;
             // 
+            // splitContainer1
+            // 
+            splitContainer1.Dock = DockStyle.Fill;
+            splitContainer1.Location = new Point(0, 0);
+            splitContainer1.Name = "splitContainer1";
+            splitContainer1.Orientation = Orientation.Horizontal;
+            // 
+            // splitContainer1.Panel1
+            // 
+            splitContainer1.Panel1.Controls.Add(NumericLB);
+            splitContainer1.Panel1.Controls.Add(UpperRichTextBox);
+            // 
+            // splitContainer1.Panel2
+            // 
+            splitContainer1.Panel2.Controls.Add(LowerDataGridView);
+            splitContainer1.Size = new Size(796, 364);
+            splitContainer1.SplitterDistance = 182;
+            splitContainer1.TabIndex = 4;
+            // 
+            // NumericLB
+            // 
+            NumericLB.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            NumericLB.Font = new Font("Bahnschrift", 12F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            NumericLB.FormattingEnabled = true;
+            NumericLB.IntegralHeight = false;
+            NumericLB.ItemHeight = 19;
+            NumericLB.Location = new Point(5, 3);
+            NumericLB.Name = "NumericLB";
+            NumericLB.Size = new Size(52, 176);
+            NumericLB.TabIndex = 3;
+            // 
             // UpperRichTextBox
             // 
             UpperRichTextBox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             UpperRichTextBox.Font = new Font("Bahnschrift", 12F);
-            UpperRichTextBox.Location = new Point(12, 6);
+            UpperRichTextBox.Location = new Point(63, 3);
             UpperRichTextBox.Name = "UpperRichTextBox";
             UpperRichTextBox.ShortcutsEnabled = false;
-            UpperRichTextBox.Size = new Size(772, 161);
+            UpperRichTextBox.Size = new Size(730, 176);
             UpperRichTextBox.TabIndex = 0;
             UpperRichTextBox.Text = "";
+            UpperRichTextBox.WordWrap = false;
             UpperRichTextBox.TextChanged += UpperRichTextBox_TextChanged;
             // 
-            // DownRichTextBox
+            // LowerDataGridView
             // 
-            DownRichTextBox.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            DownRichTextBox.Font = new Font("Bahnschrift", 12F);
-            DownRichTextBox.Location = new Point(12, 173);
-            DownRichTextBox.Name = "DownRichTextBox";
-            DownRichTextBox.Size = new Size(772, 161);
-            DownRichTextBox.TabIndex = 1;
-            DownRichTextBox.Text = "";
+            LowerDataGridView.AllowUserToAddRows = false;
+            LowerDataGridView.AllowUserToDeleteRows = false;
+            LowerDataGridView.BackgroundColor = SystemColors.ControlLight;
+            LowerDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            LowerDataGridView.Columns.AddRange(new DataGridViewColumn[] { FileNameColumn, LineColumn, ColumnColumn, MessageColumn });
+            LowerDataGridView.Dock = DockStyle.Fill;
+            LowerDataGridView.Location = new Point(0, 0);
+            LowerDataGridView.Name = "LowerDataGridView";
+            LowerDataGridView.ReadOnly = true;
+            LowerDataGridView.Size = new Size(796, 178);
+            LowerDataGridView.TabIndex = 0;
+            // 
+            // FileNameColumn
+            // 
+            FileNameColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            FileNameColumn.HeaderText = "Путь к файлу";
+            FileNameColumn.Name = "FileNameColumn";
+            FileNameColumn.ReadOnly = true;
+            // 
+            // LineColumn
+            // 
+            LineColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            LineColumn.HeaderText = "Строка";
+            LineColumn.Name = "LineColumn";
+            LineColumn.ReadOnly = true;
+            LineColumn.Width = 71;
+            // 
+            // ColumnColumn
+            // 
+            ColumnColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            ColumnColumn.HeaderText = "Столбец";
+            ColumnColumn.Name = "ColumnColumn";
+            ColumnColumn.ReadOnly = true;
+            ColumnColumn.Width = 79;
+            // 
+            // MessageColumn
+            // 
+            MessageColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            MessageColumn.HeaderText = "Сообщение";
+            MessageColumn.Name = "MessageColumn";
+            MessageColumn.ReadOnly = true;
+            MessageColumn.Width = 98;
             // 
             // MainForm
             // 
@@ -603,7 +694,8 @@
             MainMenuStrip = MainMenu;
             MinimumSize = new Size(812, 557);
             Name = "MainForm";
-            Text = "Главное окно";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Текстовый редактор";
             FormClosing += MainForm_FormClosing;
             MainMenu.ResumeLayout(false);
             MainMenu.PerformLayout();
@@ -612,6 +704,11 @@
             TopPanel.ResumeLayout(false);
             TopPanel.PerformLayout();
             MainPanel.ResumeLayout(false);
+            splitContainer1.Panel1.ResumeLayout(false);
+            splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
+            splitContainer1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)LowerDataGridView).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -650,7 +747,6 @@
         private Panel TopPanel;
         private PictureBox NSTUlogo;
         private Panel MainPanel;
-        private RichTextBox DownRichTextBox;
         private Button FileButton;
         private Button PasteButton;
         private Button CutButton;
@@ -670,5 +766,13 @@
         private ToolStripMenuItem языкПрограммыToolStripMenuItem;
         private ToolStripMenuItem русскийToolStripMenuItem;
         private ToolStripMenuItem английскийToolStripMenuItem;
+        private SplitContainer splitContainer1;
+        private ListBox NumericLB;
+        private DataGridView LowerDataGridView;
+        private DataGridViewTextBoxColumn FileNameColumn;
+        private DataGridViewTextBoxColumn LineColumn;
+        private DataGridViewTextBoxColumn ColumnColumn;
+        private DataGridViewTextBoxColumn MessageColumn;
+        private ToolStripMenuItem закрытьВкладкуToolStripMenuItem;
     }
 }

@@ -196,7 +196,7 @@
     <value>Вызов справки</value>
   </data>
   <data name="оПрограммеToolStripMenuItem" xml:space="preserve">
-    <value>Помощь</value>
+    <value>О программе</value>
   </data>
   <data name="размерШрифтаВОкнеВыводавводаToolStripMenuItem" xml:space="preserve">
     <value>Размер шрифта</value>
@@ -209,12 +209,6 @@
   </data>
   <data name="английскийToolStripMenuItem" xml:space="preserve">
     <value>Английский</value>
-  </data>
-  <data name="SaveFileStr1" xml:space="preserve">
-    <value>Сохранить файл</value>
-  </data>
-  <data name="SaveFileStr2" xml:space="preserve">
-    <value>Сохранинть файл</value>
   </data>
   <data name="FileSaved" xml:space="preserve">
     <value>Файл успешно сохранен.</value>
@@ -254,5 +248,41 @@
   </data>
   <data name="ToolTip_InfoButton" xml:space="preserve">
     <value>О программе</value>
+  </data>
+  <data name="FileCreated" xml:space="preserve">
+    <value>Файл успешно сохранён</value>
+  </data>
+  <data name="TabLabel" xml:space="preserve">
+    <value>Текущая вкладка</value>
+  </data>
+  <data name="FileNameColumn" xml:space="preserve">
+    <value>Путь к файлу</value>
+  </data>
+  <data name="LineColumn" xml:space="preserve">
+    <value>Строка</value>
+  </data>
+  <data name="ColumnColumn" xml:space="preserve">
+    <value>Столбец</value>
+  </data>
+  <data name="MessageColumn" xml:space="preserve">
+    <value>Сообщение</value>
+  </data>
+  <data name="CloseUnsavedStr" xml:space="preserve">
+    <value>Есть несохранённые вкладки. Вы уверены, что хотите закрыть программу?</value>
+  </data>
+  <data name="CloseSavedStr" xml:space="preserve">
+    <value>Вы уверены, что хотите закрыть программу?</value>
+  </data>
+  <data name="SaveNoPathStr" xml:space="preserve">
+    <value>Не выбран редактируемый файл. Желаете создать файл?</value>
+  </data>
+  <data name="CloseProgramStr" xml:space="preserve">
+    <value>Закрытие программы</value>
+  </data>
+  <data name="MessageNoPathStr" xml:space="preserve">
+    <value>Отсутствует редактируемый файл</value>
+  </data>
+  <data name="закрытьВкладкуToolStripMenuItem" xml:space="preserve">
+    <value>Закрыть вкладку</value>
   </data>
 </root>
