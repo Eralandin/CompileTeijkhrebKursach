@@ -223,7 +223,25 @@ namespace CompileTeijkhrebKursach.View
 
             SyncScroll();
         }
-        
+        //Кнопка перевода на другой шрифт
+        private void toolStripComboBox1_TextUpdate(object sender, EventArgs e)
+        {
+            try
+            {
+                UpperRichTextBox.Font = new Font("Bahnschrift", float.Parse(toolStripComboBox1.Text));
+                LowerDataGridView.Font = new Font("Bahnschrift", float.Parse(toolStripComboBox1.Text));
+                NumericLB.Font = new Font("Bahnschrift", float.Parse(toolStripComboBox1.Text));
+                NumericLB.ItemHeight = int.Parse(toolStripComboBox1.Text);
+                UpdateLineNumbers();
+                UpperRichTextBox.Update();
+                LowerDataGridView.Update();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
 
         ////Блок оповещений
         //Метод для оповещения путём MessageBox
@@ -492,24 +510,6 @@ namespace CompileTeijkhrebKursach.View
                 Thread.CurrentThread.CurrentUICulture = new CultureInfo("en");
                 ResourceManager res = new ResourceManager("CompileTeijkhrebKursach.Resources.Resource_en", typeof(MainForm).Assembly);
                 UpdateControlsText(this, res);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
-        //Кнопка перевода на другой язык
-        private void toolStripComboBox1_TextUpdate(object sender, EventArgs e)
-        {
-            try
-            {
-                UpperRichTextBox.Font = new Font("Bahnschrift", float.Parse(toolStripComboBox1.Text));
-                LowerDataGridView.Font = new Font("Bahnschrift", float.Parse(toolStripComboBox1.Text));
-                NumericLB.Font = new Font("Bahnschrift", float.Parse(toolStripComboBox1.Text));
-                NumericLB.ItemHeight = int.Parse(toolStripComboBox1.Text);
-                UpdateLineNumbers();
-                UpperRichTextBox.Update();
-                LowerDataGridView.Update();
             }
             catch (Exception ex)
             {
