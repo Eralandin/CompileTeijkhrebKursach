@@ -82,7 +82,9 @@
             splitContainer1 = new SplitContainer();
             NumericLB = new ListBox();
             UpperRichTextBox = new RichTextBox();
-            LowerDataGridView = new DataGridView();
+            LowerTabs = new TabControl();
+            ScanPage = new TabPage();
+            ScanerDataGridView = new DataGridView();
             FileNameColumn = new DataGridViewTextBoxColumn();
             LineColumn = new DataGridViewTextBoxColumn();
             ColumnColumn = new DataGridViewTextBoxColumn();
@@ -96,7 +98,9 @@
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
             splitContainer1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)LowerDataGridView).BeginInit();
+            LowerTabs.SuspendLayout();
+            ScanPage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)ScanerDataGridView).BeginInit();
             SuspendLayout();
             // 
             // MainMenu
@@ -607,7 +611,7 @@
             // 
             // splitContainer1.Panel2
             // 
-            splitContainer1.Panel2.Controls.Add(LowerDataGridView);
+            splitContainer1.Panel2.Controls.Add(LowerTabs);
             splitContainer1.Size = new Size(796, 364);
             splitContainer1.SplitterDistance = 182;
             splitContainer1.TabIndex = 4;
@@ -637,50 +641,72 @@
             UpperRichTextBox.WordWrap = false;
             UpperRichTextBox.TextChanged += UpperRichTextBox_TextChanged;
             // 
-            // LowerDataGridView
+            // LowerTabs
             // 
-            LowerDataGridView.AllowUserToAddRows = false;
-            LowerDataGridView.AllowUserToDeleteRows = false;
-            LowerDataGridView.BackgroundColor = SystemColors.ControlLight;
-            LowerDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            LowerDataGridView.Columns.AddRange(new DataGridViewColumn[] { FileNameColumn, LineColumn, ColumnColumn, MessageColumn });
-            LowerDataGridView.Dock = DockStyle.Fill;
-            LowerDataGridView.Location = new Point(0, 0);
-            LowerDataGridView.Name = "LowerDataGridView";
-            LowerDataGridView.ReadOnly = true;
-            LowerDataGridView.Size = new Size(796, 178);
-            LowerDataGridView.TabIndex = 0;
+            LowerTabs.Controls.Add(ScanPage);
+            LowerTabs.Dock = DockStyle.Fill;
+            LowerTabs.Location = new Point(0, 0);
+            LowerTabs.Name = "LowerTabs";
+            LowerTabs.SelectedIndex = 0;
+            LowerTabs.Size = new Size(796, 178);
+            LowerTabs.TabIndex = 1;
+            // 
+            // ScanPage
+            // 
+            ScanPage.Controls.Add(ScanerDataGridView);
+            ScanPage.Font = new Font("Bahnschrift", 12F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            ScanPage.Location = new Point(4, 24);
+            ScanPage.Name = "ScanPage";
+            ScanPage.Padding = new Padding(3);
+            ScanPage.Size = new Size(788, 150);
+            ScanPage.TabIndex = 0;
+            ScanPage.Text = "Сканер";
+            ScanPage.UseVisualStyleBackColor = true;
+            // 
+            // ScanerDataGridView
+            // 
+            ScanerDataGridView.AllowUserToAddRows = false;
+            ScanerDataGridView.AllowUserToDeleteRows = false;
+            ScanerDataGridView.BackgroundColor = SystemColors.ControlLight;
+            ScanerDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            ScanerDataGridView.Columns.AddRange(new DataGridViewColumn[] { FileNameColumn, LineColumn, ColumnColumn, MessageColumn });
+            ScanerDataGridView.Dock = DockStyle.Fill;
+            ScanerDataGridView.Location = new Point(3, 3);
+            ScanerDataGridView.Name = "ScanerDataGridView";
+            ScanerDataGridView.ReadOnly = true;
+            ScanerDataGridView.Size = new Size(782, 144);
+            ScanerDataGridView.TabIndex = 0;
             // 
             // FileNameColumn
             // 
-            FileNameColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            FileNameColumn.HeaderText = "Путь к файлу";
+            FileNameColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            FileNameColumn.HeaderText = "Код лексемы";
             FileNameColumn.Name = "FileNameColumn";
             FileNameColumn.ReadOnly = true;
+            FileNameColumn.Width = 131;
             // 
             // LineColumn
             // 
             LineColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            LineColumn.HeaderText = "Строка";
+            LineColumn.HeaderText = "Тип лексемы";
             LineColumn.Name = "LineColumn";
             LineColumn.ReadOnly = true;
-            LineColumn.Width = 71;
+            LineColumn.Width = 127;
             // 
             // ColumnColumn
             // 
-            ColumnColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            ColumnColumn.HeaderText = "Столбец";
+            ColumnColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            ColumnColumn.HeaderText = "Лексема";
             ColumnColumn.Name = "ColumnColumn";
             ColumnColumn.ReadOnly = true;
-            ColumnColumn.Width = 79;
             // 
             // MessageColumn
             // 
             MessageColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            MessageColumn.HeaderText = "Сообщение";
+            MessageColumn.HeaderText = "Местоположение";
             MessageColumn.Name = "MessageColumn";
             MessageColumn.ReadOnly = true;
-            MessageColumn.Width = 98;
+            MessageColumn.Width = 161;
             // 
             // MainForm
             // 
@@ -708,7 +734,9 @@
             splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
             splitContainer1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)LowerDataGridView).EndInit();
+            LowerTabs.ResumeLayout(false);
+            ScanPage.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)ScanerDataGridView).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -768,11 +796,13 @@
         private ToolStripMenuItem английскийToolStripMenuItem;
         private SplitContainer splitContainer1;
         private ListBox NumericLB;
-        private DataGridView LowerDataGridView;
+        private DataGridView ScanerDataGridView;
+        private ToolStripMenuItem закрытьВкладкуToolStripMenuItem;
+        private TabControl LowerTabs;
+        private TabPage ScanPage;
         private DataGridViewTextBoxColumn FileNameColumn;
         private DataGridViewTextBoxColumn LineColumn;
         private DataGridViewTextBoxColumn ColumnColumn;
         private DataGridViewTextBoxColumn MessageColumn;
-        private ToolStripMenuItem закрытьВкладкуToolStripMenuItem;
     }
 }

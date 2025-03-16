@@ -1,8 +1,10 @@
 ﻿using CompileTeijkhrebKursach.Model;
 using CompileTeijkhrebKursach.Presenter;
 using CompileTeijkhrebKursach.View.Interfaces;
+using System.Data;
 using System.Globalization;
 using System.Resources;
+using System.Text.RegularExpressions;
 
 
 namespace CompileTeijkhrebKursach.View
@@ -23,6 +25,7 @@ namespace CompileTeijkhrebKursach.View
         {
             InitializeComponent();
             _presenter = new MainPresenter(this);
+            _presenter._res = new ResourceManager("CompileTeijkhrebKursach.Resources.Resource_ru", typeof(MainForm).Assembly);
             lastText = UpperRichTextBox.Text;
             UpperRichTextBox.DragEnter += new DragEventHandler(MainForm_DragEnter);
             UpperRichTextBox.DragDrop += new DragEventHandler(MainForm_DragDrop);
@@ -33,13 +36,14 @@ namespace CompileTeijkhrebKursach.View
             this.SizeChanged += (s, e) => UpdateLineNumbers();
             NumericLB.SelectionMode = SelectionMode.None;
             UpdateLineNumbers();
+            
         }
 
         //Все события, назначенные на действия пользователя, те или иные
         public event EventHandler<string> CreateFile;
         public event EventHandler<string> OpenFile;
         public event EventHandler<string> SaveFile;
-        public event EventHandler StartEnd;
+        public event EventHandler<string> StartEnd;
         public event EventHandler Repeat;
         public event EventHandler<string> SaveAsFile;
         public event FormClosingEventHandler CloseProgram;
@@ -229,12 +233,12 @@ namespace CompileTeijkhrebKursach.View
             try
             {
                 UpperRichTextBox.Font = new Font("Bahnschrift", float.Parse(toolStripComboBox1.Text));
-                LowerDataGridView.Font = new Font("Bahnschrift", float.Parse(toolStripComboBox1.Text));
+                ScanerDataGridView.Font = new Font("Bahnschrift", float.Parse(toolStripComboBox1.Text));
                 NumericLB.Font = new Font("Bahnschrift", float.Parse(toolStripComboBox1.Text));
                 NumericLB.ItemHeight = int.Parse(toolStripComboBox1.Text);
                 UpdateLineNumbers();
                 UpperRichTextBox.Update();
-                LowerDataGridView.Update();
+                ScanerDataGridView.Update();
             }
             catch (Exception ex)
             {
@@ -317,6 +321,7 @@ namespace CompileTeijkhrebKursach.View
         {
             try
             {
+                selectionIndex = UpperRichTextBox.SelectionStart;
                 Repeat?.Invoke(this, EventArgs.Empty);
             }
             catch (Exception ex)
@@ -384,6 +389,10 @@ namespace CompileTeijkhrebKursach.View
                 string newText = UpperRichTextBox.Text;
                 ThrowNewTextToModel?.Invoke(this, newText);
                 int cursorPos = UpperRichTextBox.SelectionStart;
+                if (!UpperRichTextBox.Focused)
+                {
+                    cursorPos = selectionIndex;
+                }
 
                 if (newText.Length > lastText.Length) // Ввод символа
                 {
@@ -414,6 +423,7 @@ namespace CompileTeijkhrebKursach.View
                 }
                 int firstVisibleLine = UpperRichTextBox.GetLineFromCharIndex(UpperRichTextBox.GetCharIndexFromPosition(new Point(0, 0)));
                 lastText = newText;
+                UpperRichTextBox.Focus();
                 ThrowLastTextToModel?.Invoke(this, lastText);
             }
             catch (Exception ex)
@@ -427,10 +437,10 @@ namespace CompileTeijkhrebKursach.View
         //Метод для перевода интерфейса
         private void UpdateControlsText(Control control, ResourceManager res)
         {
-            LowerDataGridView.Columns[0].HeaderText = res.GetString("FileNameColumn");
-            LowerDataGridView.Columns[1].HeaderText = res.GetString("LineColumn");
-            LowerDataGridView.Columns[2].HeaderText = res.GetString("ColumnColumn");
-            LowerDataGridView.Columns[3].HeaderText = res.GetString("MessageColumn");
+            ScanerDataGridView.Columns[0].HeaderText = res.GetString("FileNameColumn");
+            ScanerDataGridView.Columns[1].HeaderText = res.GetString("LineColumn");
+            ScanerDataGridView.Columns[2].HeaderText = res.GetString("ColumnColumn");
+            ScanerDataGridView.Columns[3].HeaderText = res.GetString("MessageColumn");
             _presenter.CloseProgramStr = res.GetString("CloseProgramStr");
             _presenter.CloseSavedStr = res.GetString("CloseSavedStr");
             _presenter.CloseUnsavedStr = res.GetString("CloseUnsavedStr");
@@ -494,8 +504,8 @@ namespace CompileTeijkhrebKursach.View
             try
             {
                 Thread.CurrentThread.CurrentUICulture = new CultureInfo("ru");
-                ResourceManager res = new ResourceManager("CompileTeijkhrebKursach.Resources.Resource_ru", typeof(MainForm).Assembly);
-                UpdateControlsText(this, res);
+                _presenter._res = new ResourceManager("CompileTeijkhrebKursach.Resources.Resource_ru", typeof(MainForm).Assembly);
+                UpdateControlsText(this, _presenter._res);
             }
             catch (Exception ex)
             {
@@ -508,8 +518,8 @@ namespace CompileTeijkhrebKursach.View
             try
             {
                 Thread.CurrentThread.CurrentUICulture = new CultureInfo("en");
-                ResourceManager res = new ResourceManager("CompileTeijkhrebKursach.Resources.Resource_en", typeof(MainForm).Assembly);
-                UpdateControlsText(this, res);
+                _presenter._res = new ResourceManager("CompileTeijkhrebKursach.Resources.Resource_en", typeof(MainForm).Assembly);
+                UpdateControlsText(this, _presenter._res);
             }
             catch (Exception ex)
             {
@@ -587,7 +597,7 @@ namespace CompileTeijkhrebKursach.View
         {
             try
             {
-                StartEnd?.Invoke(this, EventArgs.Empty);
+                StartEnd?.Invoke(this, Regex.Replace(UpperRichTextBox.Text.Trim(),@"\s+", ""));
             }
             catch (Exception ex)
             {
@@ -653,6 +663,18 @@ namespace CompileTeijkhrebKursach.View
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+            }
+        }
+
+
+        ////Блок информации о сканировании
+        //Заполнение ScanerDGV
+        public void FillScanerDGV(List<Lexem> lexemsList)
+        {
+            ScanerDataGridView.Rows.Clear();
+            foreach (var item in lexemsList)
+            {
+                ScanerDataGridView.Rows.Add(item.lexemCode,item.lexemName,item.lexemContaintment,item.lexemStartPosition+1 + "-"+item.lexemEndPosition);
             }
         }
 

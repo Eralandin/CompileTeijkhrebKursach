@@ -1,6 +1,7 @@
 ﻿using CompileTeijkhrebKursach.Model;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,7 +17,7 @@ namespace CompileTeijkhrebKursach.View.Interfaces
         event EventHandler<string> CreateFile;
         event EventHandler<string> OpenFile;
         event EventHandler<string> SaveFile;
-        event EventHandler StartEnd;
+        event EventHandler<string> StartEnd;
         event EventHandler Repeat;
         event EventHandler<string> SaveAsFile;
         event FormClosingEventHandler CloseProgram;
@@ -44,5 +45,6 @@ namespace CompileTeijkhrebKursach.View.Interfaces
         void DeleteDeletedPage();
         void DeleteAllPages();
         void ClearPairs();
+        void FillScanerDGV(List<Lexem> lexemsList);
     }
 }

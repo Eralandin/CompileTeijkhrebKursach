@@ -256,16 +256,16 @@
     <value>Current Page:</value>
   </data>
   <data name="FileNameColumn" xml:space="preserve">
-    <value>File path</value>
+    <value>Lexem code</value>
   </data>
   <data name="LineColumn" xml:space="preserve">
-    <value>Line</value>
+    <value>Lexem type</value>
   </data>
   <data name="ColumnColumn" xml:space="preserve">
-    <value>Column</value>
+    <value>Lexem</value>
   </data>
   <data name="MessageColumn" xml:space="preserve">
-    <value>Message</value>
+    <value>Position</value>
   </data>
   <data name="CloseUnsavedStr" xml:space="preserve">
     <value>There are unsaved tabs. Are you sure you want to close the program?</value>
@@ -284,5 +284,62 @@
   </data>
   <data name="закрытьВкладкуToolStripMenuItem" xml:space="preserve">
     <value>Close current tab</value>
+  </data>
+  <data name="Identificator" xml:space="preserve">
+    <value>Identificator</value>
+  </data>
+  <data name="KeyWord" xml:space="preserve">
+    <value>Key Word</value>
+  </data>
+  <data name="Partial" xml:space="preserve">
+    <value>Partial Symbol</value>
+  </data>
+  <data name="AssignmentOperator" xml:space="preserve">
+    <value>Assignment Operator</value>
+  </data>
+  <data name="String" xml:space="preserve">
+    <value>String</value>
+  </data>
+  <data name="F_stringAssign" xml:space="preserve">
+    <value>F-string Assign</value>
+  </data>
+  <data name="Minus" xml:space="preserve">
+    <value>Minus</value>
+  </data>
+  <data name="Plus" xml:space="preserve">
+    <value>Plus</value>
+  </data>
+  <data name="FunctionalPartial" xml:space="preserve">
+    <value>Functional Partial</value>
+  </data>
+  <data name="MinusComlexInt" xml:space="preserve">
+    <value>Scientific notation of integer (negative)</value>
+  </data>
+  <data name="PlusComplexInt" xml:space="preserve">
+    <value>Scientific notation of integer (positive)</value>
+  </data>
+  <data name="Int" xml:space="preserve">
+    <value>Integer</value>
+  </data>
+  <data name="Double" xml:space="preserve">
+    <value>Real number</value>
+  </data>
+  <data name="MinusComplexDouble" xml:space="preserve">
+    <value>Scientific notation of real number (negative)</value>
+  </data>
+  <data name="PlusComplexDouble" xml:space="preserve">
+    <value>Scientific notation of real number (positive)</value>
+  </data>
+  <data name="OpenScobe" xml:space="preserve">
+    <value>Opening parenthesis</value>
+  </data>
+  <data name="CloseScobe" xml:space="preserve">
+    <value>Closing parenthesis</value>
+  </data>
+  <data name="Ending" xml:space="preserve">
+    <value>Terminal symbol</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>ERROR: UNKNOWN/WRONG SYMBOL</value>
   </data>
 </root>

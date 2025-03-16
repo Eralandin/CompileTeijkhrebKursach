@@ -3,7 +3,9 @@ using CompileTeijkhrebKursach.View;
 using CompileTeijkhrebKursach.View.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
+using System.Resources;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,6 +17,7 @@ namespace CompileTeijkhrebKursach.Presenter
     {
         //необходимые для работы программы поля
         private readonly IMain _view;
+        private List<Lexem> lexemsList;
         private string editingFileName = "";
         private bool isSaved = true;
         private Operation lastUserOperation;
@@ -28,6 +31,7 @@ namespace CompileTeijkhrebKursach.Presenter
         public string SaveNoPathStr = "Не выбран редактируемый файл. Желаете создать файл?";
         public string CloseProgramStr = "Закрытие программы";
         public string MessageNoPathStr = "Отсутствует редактируемый файл";
+        public ResourceManager _res;
 
         //Конструктор класса
         public MainPresenter(IMain view)
@@ -56,6 +60,17 @@ namespace CompileTeijkhrebKursach.Presenter
             _view.ThrowLastTextToModel += SetLastTextOnModel;
             _view.ThrowNewTextToModel += SetNewTextOnModel;
             _view.CloseCurrentPage += CloseCurrentPage;
+            _view.StartEnd += StartEnd;
+        }
+        ////Блок запуска функционала
+        //Обработка "Пуска"
+        public void StartEnd(object sender, string textToAnalyze)
+        {
+            lexemsList = new List<Lexem>();
+            Lexer lexer = new Lexer(textToAnalyze, _res);
+            lexemsList = lexer.Scan();
+            _view.FillScanerDGV(lexemsList);
+            
         }
 
 

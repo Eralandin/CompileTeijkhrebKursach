@@ -256,16 +256,16 @@
     <value>Текущая вкладка</value>
   </data>
   <data name="FileNameColumn" xml:space="preserve">
-    <value>Путь к файлу</value>
+    <value>Код лексемы</value>
   </data>
   <data name="LineColumn" xml:space="preserve">
-    <value>Строка</value>
+    <value>Тип лексемы</value>
   </data>
   <data name="ColumnColumn" xml:space="preserve">
-    <value>Столбец</value>
+    <value>Лексема</value>
   </data>
   <data name="MessageColumn" xml:space="preserve">
-    <value>Сообщение</value>
+    <value>Местоположение</value>
   </data>
   <data name="CloseUnsavedStr" xml:space="preserve">
     <value>Есть несохранённые вкладки. Вы уверены, что хотите закрыть программу?</value>
@@ -284,5 +284,62 @@
   </data>
   <data name="закрытьВкладкуToolStripMenuItem" xml:space="preserve">
     <value>Закрыть вкладку</value>
+  </data>
+  <data name="Identificator" xml:space="preserve">
+    <value>Идентификатор</value>
+  </data>
+  <data name="KeyWord" xml:space="preserve">
+    <value>Ключевое слово</value>
+  </data>
+  <data name="Partial" xml:space="preserve">
+    <value>Разделитель</value>
+  </data>
+  <data name="AssignmentOperator" xml:space="preserve">
+    <value>Оператор присвоения</value>
+  </data>
+  <data name="String" xml:space="preserve">
+    <value>Строка</value>
+  </data>
+  <data name="F_stringAssign" xml:space="preserve">
+    <value>Указание на f-строку</value>
+  </data>
+  <data name="Minus" xml:space="preserve">
+    <value>Минус</value>
+  </data>
+  <data name="Plus" xml:space="preserve">
+    <value>Плюс</value>
+  </data>
+  <data name="FunctionalPartial" xml:space="preserve">
+    <value>Функциональный разделитель</value>
+  </data>
+  <data name="MinusComlexInt" xml:space="preserve">
+    <value>Научная запись целого числа (отриц.)</value>
+  </data>
+  <data name="PlusComplexInt" xml:space="preserve">
+    <value>Научная запись целого числа (положит.)</value>
+  </data>
+  <data name="Int" xml:space="preserve">
+    <value>Целое число</value>
+  </data>
+  <data name="Double" xml:space="preserve">
+    <value>Вещественное число</value>
+  </data>
+  <data name="MinusComplexDouble" xml:space="preserve">
+    <value>Научная запись вещественного числа (отриц.)</value>
+  </data>
+  <data name="PlusComplexDouble" xml:space="preserve">
+    <value>Научная запись вещественного числа (положит.)</value>
+  </data>
+  <data name="OpenScobe" xml:space="preserve">
+    <value>Открывающая скобка</value>
+  </data>
+  <data name="CloseScobe" xml:space="preserve">
+    <value>Закрывающая скобка</value>
+  </data>
+  <data name="Ending" xml:space="preserve">
+    <value>Терминальный символ</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>ОШИБКА: НЕИЗВЕСТНЫЙ/ОШИБОЧНЫЙ СИМВОЛ</value>
   </data>
 </root>
