@@ -597,7 +597,7 @@ namespace CompileTeijkhrebKursach.View
         {
             try
             {
-                StartEnd?.Invoke(this, Regex.Replace(UpperRichTextBox.Text.Trim(),@"\s+", ""));
+                StartEnd?.Invoke(this, UpperRichTextBox.Text.Trim().Replace(" ", "").Replace("\t", "").Replace("\n", "").Replace("\r", ""));
             }
             catch (Exception ex)
             {

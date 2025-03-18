@@ -70,7 +70,6 @@ namespace CompileTeijkhrebKursach.Presenter
             Lexer lexer = new Lexer(textToAnalyze, _res);
             lexemsList = lexer.Scan();
             _view.FillScanerDGV(lexemsList);
-            
         }
 
 

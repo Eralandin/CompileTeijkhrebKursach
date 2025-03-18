@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Resources;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace CompileTeijkhrebKursach.Presenter
@@ -31,16 +32,12 @@ namespace CompileTeijkhrebKursach.Presenter
         public List<Lexem> Scan()
         {
             while (position < text.Length)
-            {
+            { 
                 char currentChar = text[position];
 
-                if (char.IsLetter(currentChar))
+                if ((currentChar >= 'a') && (currentChar <= 'z') || ((currentChar >= 'A') && (currentChar <= 'Z') || ((currentChar >= '0') && (currentChar <= '9')) || currentChar == '-' || currentChar == '+'))
                 {
-                    ProcessIdentifier();
-                }
-                else if (char.IsDigit(currentChar))
-                {
-                    ProcessNumber();
+                    ProcessIdentifierOrNumber();
                 }
                 else
                 {
@@ -50,62 +47,106 @@ namespace CompileTeijkhrebKursach.Presenter
             return lexemsList;
         }
 
-        //Обработка идентификатора
-        private void ProcessIdentifier()
+        //Обработка численно-буквенных лексем
+        private void ProcessIdentifierOrNumber()
         {
             int start = position;
-            while (position < text.Length && char.IsLetterOrDigit(text[position]))
-            {
-                position++;
-            }
-            string lexeme = text.Substring(start, position - start);
-            int code = lexeme == "format" ? 2 : 1;
-            lexemsList.Add(new Lexem(code, lexeme, start, position, _res));
-        }
+            bool isDouble = false; 
+            bool isScientific = false; 
+            bool startsWithDigit = char.IsDigit(text[start]);
+            bool hasLetter = false;
+            bool hasDot = false;
+            bool isAcceptable = true;
+            bool isInt = true;
+            bool isError = false;
 
-        //Обработка числа
-        private void ProcessNumber()
-        {
-            int start = position;
-            bool isDouble = false;
-            bool isScientific = false;
-
-            while (position < text.Length && (char.IsDigit(text[position]) || text[position] == '.'))
+            while (position < text.Length && (char.IsLetterOrDigit(text[position]) || text[position] == '.' || text[position] == '+' || text[position] == '-'))
             {
                 if (text[position] == '.')
                 {
-                    isDouble = true;
-                }
-                position++;
-            }
-
-            if (position < text.Length && (text[position] == 'e' || text[position] == 'E'))
-            {
-                isScientific = true;
-                position++;
-                if (position < text.Length && (text[position] == '+' || text[position] == '-'))
-                {
-                    position++;
-                }
-                while (position < text.Length && char.IsDigit(text[position]))
-                {
-                    position++;
-                }
-            }
-
-            string lexeme = text.Substring(start, position - start);
-            int code;
-            if (isScientific)
-            {
-                if (lexeme.Contains("-") | lexeme.Contains("+"))
-                {
-                    if (isDouble)
+                    if (!hasDot && !hasLetter)
                     {
-                        code = lexeme.Contains("-") ? 14 : 15;
+                        hasDot = true;
+                        isDouble = true;
+                        isInt = false;
+                    }
+                    else if (!hasLetter)
+                    {
+                        isAcceptable = false;
+                        isDouble = false;
+                        isInt = false;
                     }
                     else
                     {
-                        code = lexeme.Contains("-") ? 10 : 11;
+                        string lexeme_break_end = text.Substring(start, (position) - start);
+                        lexemsList.Add(new Lexem(1,lexeme_break_end,start,position, _res));
+                        return;
+                    }
+                }
+                else if (text[position] == '+' || text[position] == '-')
+                {
+                    position++;
+                    continue;
+                }
+                else if (((text[position] >= 'a') && (text[position] <= 'z') || ((text[position] >= 'A') && (text[position] <= 'Z')) && !(((text[position] >= 'а') && (text[position] <= 'я')) || ((text[position] >= 'А') && (text[position] <= 'Я')))))
+                {
+                    if ((text[position] == 'e' || text[position] == 'E') && (text[position-1] >= '0') && (text[position-1] <= '9'))
+                    {
+                        if (!isScientific)
+                        {
+                            isScientific = true;
+                            isInt = false;
+                        }
+                        else
+                        {
+                            isScientific = false;
+                            isDouble = false;
+                            hasLetter = true;
+                            isInt = false;
+                        }
+                    }
+                    else
+                    {
+                        isDouble = false;
+                        isScientific = false;
+                        hasLetter = true;
+                        isInt = false;
+                    }
+                }
+                else if (char.IsDigit(text[position]))
+                {
+                    position++;
+                    continue;
+                }
+                else
+                {
+                    isAcceptable = false;
+                }
+                position++;
+            }
+            
+            string lexeme = text.Substring(start, position - start);
+            int code;
+            if (isError)
+            {
+                lexemsList.Add(new Lexem(19, lexeme, start, position - start, _res));
+                return;
+            }
+            if (isScientific && isAcceptable && startsWithDigit)
+            {
+                if (lexeme.Contains('-') | lexeme.Contains('+'))
+                {
+                    if (isDouble)
+                    {
+                        code = lexeme.Contains('-') ? 14 : 15;
+                        lexemsList.Add(new Lexem(code, lexeme, start, position, _res));
+                        return;
+                    }
+                    else
+                    {
+                        code = lexeme.Contains('-') ? 10 : 11;
+                        lexemsList.Add(new Lexem(code, lexeme, start, position, _res));
+                        return;
                     }
                 }
                 else
@@ -114,11 +155,37 @@ namespace CompileTeijkhrebKursach.Presenter
                     return;
                 }
             }
+            else if (isInt && isAcceptable && startsWithDigit)
+            {
+                lexemsList.Add(new Lexem(12, lexeme,start, position, _res));
+            }
+            else if (isDouble && isAcceptable && startsWithDigit)
+            {
+                lexemsList.Add(new Lexem(13, lexeme, start, position, _res));
+                return;
+            }
+            else if (startsWithDigit && !isAcceptable)
+            {
+                lexemsList.Add(new Lexem(19, lexeme, start, position, _res));
+                return;
+            }
+            else if (hasLetter && !hasDot && isAcceptable && !startsWithDigit)
+            {
+                if (lexeme == "format")
+                {
+                    lexemsList.Add(new Lexem(2,lexeme,start, position, _res));
+                    return;
+                }
+                else
+                {
+                    lexemsList.Add(new Lexem(1, lexeme,start, position, _res));
+                    return;
+                }
+            }
             else
             {
-                code = isDouble ? 13 : 12;
+                lexemsList.Add(new Lexem(19, lexeme, start, position, _res));
             }
-            lexemsList.Add(new Lexem(code, lexeme, start, position, _res));
         }
 
         //Обработка символа
